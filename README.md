@@ -36,20 +36,6 @@ List Branches : ./build/gbm
 Add Branch : ./build/gbm add <branch-name> <commit-hash> [issue-id] [description]
 Update Branch Status : ./build/gbm update <branch-name> <new-status>
 
-## Project Structure
-
-git-branch-manager/
-├── build/                  # CMake build folder
-├── data/                   # SQLite database folder
-├── include/                # Header files
-│   ├── branch_manager.hpp
-│   └── db.hpp
-├── src/                    # Source files
-│   ├── main.cpp
-│   ├── branch_manager.cpp
-│   └── db.cpp
-├── CMakeLists.txt
-└── README.md
 
 ## Dependencies
 
