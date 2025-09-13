@@ -1,0 +1,16 @@
+# build artifacts
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# sqlite DB file
+/data/*.db
+*.db
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
