@@ -4,13 +4,15 @@
 #include <filesystem>
 
 int main(int argc, char** argv) {
+    // Create data directory and initialize DB
     std::filesystem::create_directories("data");
     DB db("data/gitbranch.db");
     if (!db.init()) return 1;
+
     BranchManager bm(db);
 
+    // No arguments → list branches
     if (argc == 1) {
-        // list branches
         auto branches = db.listBranches();
         std::cout << "ID | Branch | Commit | Issue | Status | Created\n";
         for (auto &b : branches) {
@@ -22,6 +24,8 @@ int main(int argc, char** argv) {
     }
 
     std::string cmd = argv[1];
+
+    // Add a branch
     if (cmd == "add") {
         if (argc < 4) {
             std::cerr << "usage: gbm add <branch-name> <commit-hash> [issue-id] [description]\n";
@@ -39,6 +43,24 @@ int main(int argc, char** argv) {
             return 1;
         }
     }
+
+    // Update branch status
+    if (cmd == "update") {
+        if (argc < 4) {
+            std::cerr << "usage: gbm update <branch-name> <new-status>\n";
+            return 1;
+        }
+        std::string branch = argv[2];
+        std::string status = argv[3];
+        if (bm.updateBranchStatus(branch, status)) {
+            std::cout << "Branch status updated\n";
+            return 0;
+        } else {
+            std::cerr << "Failed to update branch status\n";
+            return 1;
+        }
+    }
+
     std::cerr << "unknown command\n";
     return 1;
 }

@@ -101,3 +101,20 @@ std::vector<BranchInfo> DB::listBranches() const {
     sqlite3_finalize(stmt);
     return out;
 }
+bool DB::updateBranchStatus(const std::string& branchName, const std::string& newStatus) {
+    if (!dbHandle_) return false;
+    const char* sql = "UPDATE branches SET merge_status = ?, updated_at = ? WHERE branch_name = ?;";
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(reinterpret_cast<sqlite3*>(dbHandle_), sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "prepare failed: " << sqlite3_errmsg(reinterpret_cast<sqlite3*>(dbHandle_)) << "\n";
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, newStatus.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(stmt, 2, static_cast<std::int64_t>(std::time(nullptr)));
+    sqlite3_bind_text(stmt, 3, branchName.c_str(), -1, SQLITE_TRANSIENT);
+
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+    return rc == SQLITE_DONE;
+}

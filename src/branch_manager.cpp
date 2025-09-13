@@ -17,3 +17,8 @@ bool BranchManager::addFromGit(const std::string& branchName, const std::string&
     b.merge_status = "open";
     return db_.addBranch(b);
 }
+bool BranchManager::updateBranchStatus(const std::string& branchName, const std::string& newStatus) {
+    return db_.updateBranchStatus(branchName, newStatus);
+}
+
+

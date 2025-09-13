@@ -22,6 +22,7 @@ class DB{
     private:
     void* dbHandle_;
     public:
+    bool updateBranchStatus(const std::string& branchName, const std::string& newStatus);
     explicit DB(const string& path);
     ~DB();
     bool init();
